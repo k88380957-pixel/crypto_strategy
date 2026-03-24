@@ -1,0 +1,6 @@
+feedparser
+vaderSentiment
+requests
+pandas
+numpy
+matplotlib
