@@ -18,6 +18,8 @@ Working directly with raw blockchain data is challenging because blocks must be 
 * **Risk assessment** – evaluates volatility, drawdown and TVL declines to flag assets with elevated risk.
 * **Explainable report** – outputs a human‑readable summary containing top candidates, their quantitative scores, key drivers and risks.
 
+* **Notifications and AI summary** – after computing scores, the pipeline can optionally generate a concise summary using Google’s Gemini language model and send the result to a Telegram chat.  The summary service uses the Gemini API to distill the report into a few sentences, making it easier to digest.  The Telegram integration posts either the raw report or the AI‑generated summary directly to a specified chat or channel.
+
 ## Repository structure
 
 ```
@@ -51,6 +53,8 @@ crypto_strategy/
    - `CM_API_KEY` for CoinMetrics (active addresses).
    - `SAN_API_KEY` for Santiment (exchange flows).
    - `WHALE_ALERT_API_KEY` for Whale Alert (whale flows).
+   - `TELEGRAM_TOKEN` and `TELEGRAM_CHAT_ID` for Telegram notifications.  When set, the daily report (or its Gemini summary) will be posted to this chat.
+   - `GEMINI_API_KEY` for the Gemini summarisation API.  When set, the pipeline calls the Gemini API to produce a concise summary of the report before posting it to Telegram.
 
 3. Edit `config.py` to customise the list of tokens, news feeds and weighting scheme.
 
@@ -63,6 +67,8 @@ python main.py
 ```
 
 The script will fetch data for each token, compute features, score them and print a ranking with risk levels and explanations.  On GitHub, the workflow file runs this script daily and can be scheduled to post results to chat services.
+
+If you set `TELEGRAM_TOKEN` and `TELEGRAM_CHAT_ID` in your environment, the script will also send the report (or its AI summary) to Telegram.  To enable AI summarisation, set `GEMINI_API_KEY` as well.
 
 ## Disclaimer
 
